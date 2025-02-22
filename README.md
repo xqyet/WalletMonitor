@@ -6,7 +6,7 @@ This project is a simple blockchain monitoring and fund interception tool - desi
 **Supported Chains** – Supports Ethereum, Binance Smart Chain (BSC), Polygon, Arbitrum, and Solana.  
 **Seed Phrase Monitoring** – Derives wallet addresses from a seed phrase to track movements.  
 **Automatic Transfer** – Monitors incoming transactions redirects funds to an external wallet.  
-**Automatic Execution** – Runs at intervals to continuously monitor and act - also includes an event listener for incoming transactions (if not being rate limited on a public node)
+**Automatic Execution** – Runs at intervals to continuously monitor and act - also includes an event listener for incoming transactions (if not being rate limited on a public node. currently commented out for private node API call)
 
 ---
 
