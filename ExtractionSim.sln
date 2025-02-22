@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ExtractionSim", "ExtractionSim\ExtractionSim.njsproj", "{2894A4E9-5154-4CB2-887D-2F5D0A334A85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2894A4E9-5154-4CB2-887D-2F5D0A334A85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2894A4E9-5154-4CB2-887D-2F5D0A334A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2894A4E9-5154-4CB2-887D-2F5D0A334A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2894A4E9-5154-4CB2-887D-2F5D0A334A85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {396C36C2-55E6-4E62-ABF3-B793F5F204E2}
+	EndGlobalSection
+EndGlobal
